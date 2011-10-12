@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>Javascript Scope</title>
+	<script src="./scope-extscript.js"></script>
+	<script>
+        var scriptblock="scriptblock";
+        scriptblocknovar="novar";
+        
+        function someFunction(){
+            var functionvar ="functionvar";
+            functionnovar ="functionnovar";
+        }
+        
+        for(var i=0; i<10; i++){
+            var forvar="forvar_"+i;
+        }
+	</script>
+</head>
+<body>
+    <h1>Scope</h1>
+    <script>
+    	console.log("extscript: ", extscript);
+    	console.log("scriptblock: ", scriptblock);
+    	console.log("scriptblocknovar: ", scriptblocknovar);
+        console.log("functionvar: ", functionvar);
+        console.log("functionnovar: ", functionnovar);
+        console.log("i: ", i);
+        console.log("forvar: ", forvar);
+	</script>
+</body>
+</html>
