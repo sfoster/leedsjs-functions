@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Page Title</title>
+	<style>
+		html, body {
+			margin: 0; padding: 0;
+			height: 100%;
+			overflow: hidden;
+		}
+		#container {
+			position: relative;
+			height: 90%;
+			width: 90%;
+			margin: 3% auto 0 auto;
+		}
+		.slide {
+			position: absolute;
+			top: 0; bottom: 0;
+			left: 0; right: 0;
+			border: 15px solid #eee;
+			border-radius: 15px;
+			padding: 20px;
+			background-color: #fff;
+			display: none;
+			font-size: 3em;
+		}
+		.active {
+			display: block;
+		}
+	</style>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+	<script>
+		function init(){
+			var Promise = function(){
+				return {
+					_handlers: [],
+					then: function(fn){
+						this._handlers.push(fn);
+					},
+					resolve: function(result){
+						var fn;
+						while((fn = this._handlers.shift())){
+							fn(result);
+						}
+					}
+				}
+			};
+			var Sequence = function(){
+				var seq = Array.prototype.slice.call(arguments);
+				seq.next = seq.start = function(arg){
+					var fn = sequence.shift(), 
+						res = null;
+					if(fn){
+						res = fn.call(null, arg);
+						if(res && res.then){
+							res.then(sequence.next);
+						} else {
+							sequence.next(res);
+						}
+					}
+				};
+				return seq;
+			};
+			var module = {
+				currentIdx: -1,
+				getOutline: function(url){
+					console.log("getOutline with: ", url);
+					var promise = Promise();
+					$.get(url, function(txt){
+						// console.log("got outline: ", txt);
+						var blocks = [], 
+							lines = txt.split("\n"), 
+							line = null, 
+							buf = [];
+						while((line = lines.shift()) || lines.length){
+							if(/^\s*$/.test(line)){
+								buf.length && blocks.push(buf);
+								buf = [];
+								continue;
+							}
+							if(/^(#|\/\/)/.test(line)){
+								continue;
+							}
+							buf.push(line);
+						}
+						console.log("resolving getOutline promise with: ", blocks);
+						promise.resolve(blocks);
+					});
+					return promise;
+				},
+				prepareSlides: function(blocks){
+					console.log("prepareSlides with: ", blocks);
+
+					var block;
+					var slides = module.slides = [];
+					for(var i=0; i<blocks.length; i++){
+						slides.push(
+							module.createSlide(i, blocks[i])
+						);
+					}
+				},
+				bindKeys: function (){
+					$(document).bind('keyup', function(evt){
+						switch(evt.which){
+							case 39: 
+								// console.log("right-arrow");
+								// fall-thru
+							case 40: 
+								// console.log("up-arrow");
+								module.next();
+								break;
+							case 37: 
+								// console.log("left-arrow");
+								// fall-thru
+							case 38: 
+								// console.log("down-arrow");
+								module.previous();
+						}
+						// console.log("event: ", evt.which);
+					});
+				},
+				next: function(){
+					var idx = module.currentIdx +1, 
+						slides = module.slides;
+						console.log("next slide:", idx);
+					if(idx >= slides.length){
+						idx = 0;
+					}
+					if(slides[module.currentIdx]){
+						$(slides[module.currentIdx]).removeClass("active");
+					}
+					$(slides[idx]).addClass("active");
+					module.currentIdx = idx;
+				},
+				previous: function(){
+					var idx = module.currentIdx -1, 
+						slides = module.slides;
+						console.log("previous slide:", idx);
+					if(idx <= 0){
+						idx = slides.length-1;
+					}
+					if(slides[module.currentIdx]){
+						$(slides[module.currentIdx]).removeClass("active");
+					}
+					$(slides[idx]).addClass("active");
+					module.currentIdx = idx;
+				},
+				createSlide: function(id, lines){
+					var lis = lines.map(function(line){
+						return '<li>'+line+'</li>';
+					});
+					var html = '<div class="slide" id="slide_'+id+'"><ul>'+lis.join("\n")+'</ul></div>';
+					var slide = $(html).appendTo("#container");
+					return slide;
+				}
+			};
+			var sequence = Sequence(
+				module.getOutline,
+				module.prepareSlides,
+				module.bindKeys,
+				module.next
+			);
+			sequence.start('./outline.txt');
+		}
+		
+		$(init);
+	</script>
+</head>
+<body>
+	<div id="container"></div>
+</body>
+</html>

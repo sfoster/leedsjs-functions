@@ -1,0 +1,63 @@
+functions in Javascript
+
+these are functions
+hello world: browser/html
+hello world: node.js
+
+inspecting functions
+break points
+
+function arguments
+arguments are optional
+no type hinting in arguments
+undefined
+function returns
+recursion
+
+functions are objects
+typeof
+instanceof
+attaching properties
+natives
+
+function scope
+global scope
+implied globals
+globals accessed properties of the global properties
+local variables aren't
+
+there is only function scope
+scope gotchas
+context vs. scope: this !== var
+scope traversal
+
+named functions
+anonymous functions
+immediately executing functions
+
+closures
+the module pattern
+scope chains
+function chaining
+memoizing with function replacement
+
+"this"
+object methods
+promiscuous methods
+function binding: apply and call
+
+function prototypes
+"classes"
+instances share prototypes
+mutable/immutable types
+Object.create
+extending classes
+subclasses
+
+noConflict: caching/function replacement
+function wrapping
+before/after/around
+
+# currying
+# reduce
+
