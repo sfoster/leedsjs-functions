@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>	
+	<meta charset="utf-8">
+	<title>Javascript Hello World</title>
+	<script>
+		function bind(fn, thisobj){
+			return function(){
+				return fn.apply(thisobj, arguments);
+			}
+		}
+		thing1 = {
+			name: "thing1",
+			whoYou: function(){
+				return this.name;
+			}
+		}
+		thing2 = {
+			name: "thing2",
+			whoYou: function(){
+				return this.name;
+			}
+		}
+	</script>
+</head>
+<body>
+	<script>
+		console.log(thing1.whoYou());
+		console.log(thing2.whoYou());
+		console.log(thing1.whoYou.call(thing2));
+		
+		// make sure thing1's whoYou *always* has
+		// thing1 as its 'this'
+		thing1.whoYou = bind(thing1.whoYou, thing1);
+		console.log(thing1.whoYou.call(thing2));
+	</script>
+</body>
+</html>

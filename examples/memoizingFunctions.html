@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Javascript Hello World</title>
+	<script src="./hello.js"></script>
+	<script>
+		var conditionA = "bbb";
+		myApi = {
+			testCondition: (function(){
+				
+				if(conditionA){
+					return function(){
+						console.log("condition A is in effect");
+					};
+				} else {
+					return function(){
+						console.log("condition A is not in effect");
+					};
+				}
+			})(),
+			cachedTest: function(){
+				return this._cachedTestValue == undefined ?
+					(this._cachedTestValue = testConditionA) :
+					this._cachedTestValue;
+			}
+		}
+	</script>
+</head>
+<body>
+	<script>
+	</script>
+</body>
+</html>

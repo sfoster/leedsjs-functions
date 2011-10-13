@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Javascript Hello World</title>
+	<script src="./hello.js"></script>
+	<script>
+	(function(){
+		var myApi = {
+			doSomething: function(){
+				console.log("doSomething function");
+				return this;
+			},
+			doSomethingElse: function(){
+				console.log("doSomethingElse function");
+				return this;
+			}
+		};
+		return myApi;
+	})();
+	</script>
+</head>
+<body>
+	<script>
+		myApi
+			.doSomething()
+			.doSomethingElse()
+			.doSomething();
+	</script>
+</body>
+</html>

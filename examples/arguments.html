@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Javascript Hello World</title>
+	<script>
+		function MyCriticalError(msg){
+			this.message = msg;
+		}
+		MyCriticalError.prototype = Error.prototype;
+		
+		function someFunction(str){
+			if(typeof str !== "string") {
+				throw new MyCriticalError("Expected string, got: " + typeof str);
+			}
+			console.log("the string was: ", str);
+			return true; 
+			// return "I got: " + str;
+		}
+	</script>
+</head>
+<body>
+	<script>
+		window.onload = function(){
+			someFunction("something");
+		};
+	</script>
+</body>
+</html>
