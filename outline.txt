@@ -2,7 +2,6 @@ functions in Javascript
 
 these are functions
 hello world: browser/html
-hello world: node.js
 
 inspecting functions
 break points

@@ -50,14 +50,14 @@
 			var Sequence = function(){
 				var seq = Array.prototype.slice.call(arguments);
 				seq.next = seq.start = function(arg){
-					var fn = sequence.shift(), 
+					var fn = seq.shift(), 
 						res = null;
 					if(fn){
 						res = fn.call(null, arg);
 						if(res && res.then){
-							res.then(sequence.next);
+							res.then(seq.next);
 						} else {
-							sequence.next(res);
+							seq.next(res);
 						}
 					}
 				};
